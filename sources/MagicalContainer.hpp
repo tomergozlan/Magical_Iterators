@@ -6,6 +6,7 @@
 #define MAGICAL_ITERATORS_MAGICALCONTAINER_HPP
 
 #include <vector>
+#include <algorithm>
 
 namespace ariel {
 
@@ -20,11 +21,19 @@ namespace ariel {
 
         ~MagicalContainer() = default;
 
+        MagicalContainer(const MagicalContainer& other) = default;
+        MagicalContainer& operator=(const MagicalContainer& other) = default;
+
+        MagicalContainer(MagicalContainer&& other) noexcept = default;
+        MagicalContainer& operator=(MagicalContainer&& other) noexcept = default;
+
+
+
         void addElement(int element);
 
         void removeElement(int element);
 
-        int getSize() const;
+        int size() const;
 
         std::vector<int> getElements() const;
 
@@ -42,9 +51,22 @@ namespace ariel {
 
             AscendingIterator(MagicalContainer &container);
 
-            AscendingIterator(const AscendingIterator &other);
+            AscendingIterator(const AscendingIterator &other) noexcept;
 
             ~AscendingIterator();
+
+            AscendingIterator& operator=(const AscendingIterator& other) {
+                return *this;
+            }
+
+            AscendingIterator(AscendingIterator&& other) noexcept : container(other.container) ,currentIndex(other.currentIndex) {}
+
+            AscendingIterator& operator=(AscendingIterator&& other) noexcept {
+                return *this;
+            }
+
+
+
 
             bool operator==(const AscendingIterator &other) const;
 
@@ -89,7 +111,18 @@ namespace ariel {
 
             ~SideCrossIterator();
 
-            bool operator==(const SideCrossIterator &other) const;
+            SideCrossIterator& operator=(const SideCrossIterator& other) {
+                return *this;
+            }
+
+            SideCrossIterator(SideCrossIterator&& other) noexcept : container(other.container) , currentIndex(other.currentIndex) , moveFromStart(other.moveFromStart) {}
+
+            SideCrossIterator& operator=(SideCrossIterator&& other) noexcept {
+                return *this;
+            }
+
+
+                bool operator==(const SideCrossIterator &other) const;
 
             bool operator!=(const SideCrossIterator &other) const;
 
@@ -133,6 +166,16 @@ namespace ariel {
             PrimeIterator(const PrimeIterator &other);
 
             ~PrimeIterator();
+
+            PrimeIterator& operator=(const PrimeIterator& other) {
+                return *this;
+            }
+
+            PrimeIterator& operator=(PrimeIterator&& other) noexcept {
+                return *this;
+            }
+
+            PrimeIterator(PrimeIterator&& other) noexcept:container(other.container),currentIndex(other.currentIndex) {}
 
             bool operator==(const PrimeIterator &other) const;
 
